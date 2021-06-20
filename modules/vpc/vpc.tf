@@ -33,6 +33,8 @@ locals {
 
   public_subnets = [for x in data.aws_subnet.all_subnets_detail: x.id if x.default_for_az == true]
 
+  allocation_ids = tolist([for s in aws_eip.nat-elastic-ip : s.id])
+
   public_subnet_ids      = toset(local.public_subnets)
   public_subnet_ids_list = tolist(local.public_subnets)
 }
@@ -58,10 +60,6 @@ resource "aws_eip" "nat-elastic-ip" {
   tags = {
     Name = each.key
   }
-}
-
-locals {
-  allocation_ids = tolist([for s in aws_eip.nat-elastic-ip : s.id])
 }
 
 resource "aws_nat_gateway" "example" {
