@@ -1,0 +1,196 @@
+AWSTemplateFormatVersion: 2010-09-09
+Metadata:
+  'AWS::CloudFormation::Designer':
+    fb5df2e5-5110-462d-81e8-ba4d1015c877:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 300
+        'y': 100
+      z: 0
+      embeds: []
+    656988e0-690b-433d-a519-00815711e952:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 300
+        'y': 180
+      z: 0
+      embeds: []
+    cb510d5e-4cce-443b-beb2-d30cdbf5213c:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 80
+        'y': 180
+      z: 0
+      embeds: []
+    7f25de33-bae7-4be1-b739-af08169244be:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 80
+        'y': 100
+      z: 0
+      embeds: []
+  'AWS::CloudFormation::Interface':
+    ParameterGroups:
+      - Label:
+          default: Network & Member Configuration
+        Parameters:
+          - NetworkName
+          - NetworkDesc
+          - MemberName
+          - MemberAdminUser
+          - MemberAdminPassword
+          - FrameworkVersion
+      - Label:
+          default: Peer Configuration
+        Parameters:
+          - AvailabilityZone
+          - InstanceType
+      - Label:
+          default: Additional Member Configuration
+        Parameters:
+          - InvitationID
+          - NetworkID
+    ParameterLabels:
+      VPCID:
+        default: Which VPC should this be deployed to?
+Resources:
+  FirstMember:
+    Type: 'AWS::ManagedBlockchain::Member'
+    Properties:
+      NetworkConfiguration:
+        Name: !Ref NetworkName
+        Description: !Ref NetworkDesc
+        VotingPolicy:
+          ApprovalThresholdPolicy:
+            ThresholdComparator: GREATER_THAN_OR_EQUAL_TO
+            ThresholdPercentage: 50
+            ProposalDurationInHours: 1
+        FrameworkVersion: !Ref FrameworkVersion
+        Framework: HYPERLEDGER_FABRIC
+        NetworkFrameworkConfiguration:
+          NetworkFabricConfiguration:
+            Edition: STARTER
+      MemberConfiguration:
+        Name: !Ref MemberName
+        Description: The governance body
+        MemberFrameworkConfiguration:
+          MemberFabricConfiguration:
+            AdminUsername: !Ref MemberAdminUser
+            AdminPassword: !Ref MemberAdminPassword
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: fb5df2e5-5110-462d-81e8-ba4d1015c877
+    Condition: CreateFirstMember
+  SecondMember:
+    Type: 'AWS::ManagedBlockchain::Member'
+    Properties:
+      MemberConfiguration:
+        Name: !Ref MemberName
+        Description: The participant
+        MemberFrameworkConfiguration:
+          MemberFabricConfiguration:
+            AdminUsername: !Ref MemberAdminUser
+            AdminPassword: !Ref MemberAdminPassword
+      InvitationId: !Ref InvitationID
+      NetworkId: !Ref NetworkID
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 656988e0-690b-433d-a519-00815711e952
+    Condition: CreateSecondMember
+  SecondMemberPeerOne:
+    Type: 'AWS::ManagedBlockchain::Node'
+    Properties:
+      MemberId: !GetAtt 
+        - SecondMember
+        - MemberId
+      NodeConfiguration:
+        AvailabilityZone: !Ref AvailabilityZone
+        InstanceType: !Ref InstanceType
+      NetworkId: !GetAtt 
+        - SecondMember
+        - NetworkId
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: cb510d5e-4cce-443b-beb2-d30cdbf5213c
+    DependsOn:
+      - SecondMember
+    Condition: CreateSecondMember
+  FirstMemberPeerOne:
+    Type: 'AWS::ManagedBlockchain::Node'
+    Properties:
+      MemberId: !GetAtt 
+        - FirstMember
+        - MemberId
+      NodeConfiguration:
+        AvailabilityZone: !Ref AvailabilityZone
+        InstanceType: !Ref InstanceType
+      NetworkId: !GetAtt 
+        - FirstMember
+        - NetworkId
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 7f25de33-bae7-4be1-b739-af08169244be
+    DependsOn:
+      - FirstMember
+    Condition: CreateFirstMember
+Parameters:
+  MemberName:
+    Type: String
+    Description: The name of the member organisation
+    MinLength: 1
+  InstanceType:
+    Type: String
+    Default: bc.t3.small
+    AllowedValues:
+      - bc.t3.small
+      - bc.t3.medium
+    Description: The instance type for the peer node
+    MinLength: 1
+  AvailabilityZone:
+    Type: 'AWS::EC2::AvailabilityZone::Name'
+    Description: The availaility zone to place the peer node
+    MinLength: 1
+  FrameworkVersion:
+    Type: String
+    Default: '1.4'
+    Description: The hyperledger fabric version (1.4 is supported only)
+    MinLength: 3
+  MemberAdminUser:
+    Type: String
+    Description: The admin user for the member organisation
+    MinLength: 1
+  MemberAdminPassword:
+    Type: String
+    Description: The password for the admin user
+    MinLength: 8
+  NetworkName:
+    Type: String
+    Description: The name of the blockchain network
+    MinLength: 1
+  NetworkDesc:
+    Type: String
+    Description: Brief description of the network
+    MinLength: 1
+  InvitationID:
+    Type: String
+    Description: >-
+      The invitation ID. Required only when registering additional member
+      organisation
+  NetworkID:
+    Type: String
+Conditions:
+  CreateFirstMember: !Equals 
+    - !Ref InvitationID
+    - ''
+  CreateSecondMember: !Not 
+    - !Equals 
+      - !Ref InvitationID
+      - ''
