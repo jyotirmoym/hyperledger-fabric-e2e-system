@@ -1,8 +1,8 @@
 org_network_name = "SimpleNetwork"
-org_name = "CompanyA"
+org_name = "CompanyB"
 admin_username = "admin"
-admin_passwd = "iW3oH4yE5iX6tG8h"
-availability_zone = "eu-west-2c"
+admin_passwd = "rZ7qG8zR2tD0mY9k"
+availability_zone = "eu-west-2b"
 
 security_group_name = "fabric-security-group"
 security_group_description = "The security group to be used to interact with the blockchain network"
