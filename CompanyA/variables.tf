@@ -79,3 +79,49 @@ variable "eip_names" {
 variable "fabric_service_name" {
   type = string
 }
+
+# Dependencies setup variables
+
+variable "crypto_bucket_name" {
+  type = string
+}
+
+variable "fabric_access_role_name" {
+  type = string
+}
+
+variable "key_pair_name" {
+  type = string
+}
+
+variable "second_org_name" {
+  type = string
+}
+
+variable "peer_endpoint" {
+  type = string
+}
+
+variable "org2_id" {
+  type = string
+}
+
+variable "org1_id" {
+  type = string
+}
+
+variable "org1_admin_pw" {
+  type = string
+}
+
+variable "ca_endpoint" {
+  type = string
+}
+
+variable "org1_admin_uname" {
+  type = string
+}
+
+variable "ordering_endpoint" {
+  type = string
+}

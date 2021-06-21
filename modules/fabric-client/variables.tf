@@ -1,42 +1,61 @@
-variable "org_network_name" {
-  description = "The name of the blockchain network"
-}
-variable "org_name" {
-  description = "The name of the member organisation"
+variable "org1_name" {
+  description = "The name of the first member organisation"
+  type = string
 }
 
-variable "admin_username" {
-  description = "Administrator user name of the organisation"
+variable "org2_name" {
+  description = "The name of the second member organisation"
+  type = string
 }
 
-variable "admin_passwd" {
-  description = "Administrator password of the organisation"
-  sensitive   = true
+variable "crypto_bucket" {
+  type = string
 }
 
-variable "availability_zone" {
-  description = "The availability zone where the organisation's ledger would run"
+variable "iam_role" {
+  type = string
 }
 
-variable "peer_instance_type" {
-  description = "The instance type of the peer node for the organisation"
-  default     = "bc.t3.small"
+variable "key_pair" {
+  type = string
 }
 
-variable "fabric_version" {
-  description = "The fabric version"
-  default     = 1.4
+variable "security_group_id" {
+  type = string
 }
 
-variable "nw_description" {
-  description = "Description of the network"
-  default     = "A simple fabric blockchain network"
+variable "peer_endpoint" {
+  type = string
 }
 
-variable "nw_id" {
-  description = "The network ID (Applicable only when the network exists and some organisation wants to join the network)"
+variable "vpc_id" {
+  type = string
 }
 
-variable "invitation_id" {
-  description = "The invitation ID to join a fabric network (Applicable only when the network exists and some organisation wants to join the network)"
+variable "private_subnets" {
+  type = list(string)
+}
+
+variable "org2_id" {
+  type = string
+}
+
+variable "org1_id" {
+  type = string
+}
+
+variable "org1_admin_pw" {
+  type = string
+}
+
+variable "ca_endpoint" {
+  type = string
+}
+
+variable "org1_admin_uname" {
+  type = string
+}
+
+variable "ordering_endpoint" {
+  type = string
 }

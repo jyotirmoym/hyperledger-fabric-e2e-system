@@ -18,6 +18,7 @@ Metadata:
           - EC2KeyPairName
           - InstanceType
           - InstanceProfileName
+          - CryptoBucketName
       - Label:
           default: Managed Blockchain parameters
         Parameters:
@@ -90,7 +91,6 @@ Parameters:
   InstanceProfileName:
     Description: (Optional) The name of the Instance Profile to attach to the EC2 instance.
     Type: String
-    Default: AgBeSecurityDepositBlockhainRole
   FabricCAEndpoint:
     Description: >-
       The endpoint used to access the certificate authority within a membership.
@@ -127,7 +127,10 @@ Parameters:
     Description: The second member's ID
     Type: String
   InternetAccessSGName:
-    Description: The second member's ID
+    Description: The security group name to allow internet I/O
+    Type: String
+  CryptoBucketName:
+    Description: The crypto S3 bucket name
     Type: String
 Conditions:
   HasInstanceProfileName: !Not 
@@ -382,7 +385,7 @@ Resources:
 
             rm -f *.gz
 
-            exists=$(aws s3 ls s3://credentials-ledger-crypto/${MEMBER_NAME}/admin-msp/)
+            exists=$(aws s3 ls s3://${CRYPTO_BUCKET}/${MEMBER_NAME}/admin-msp/)
 
             if [ -z "$exists" ]; then
 
@@ -390,7 +393,7 @@ Resources:
 
                 cp -r /home/ec2-user/admin-msp/signcerts admin-msp/admincerts
                 
-                aws s3 cp /home/ec2-user/admin-msp s3://credentials-ledger-crypto/${MEMBER_NAME}/admin-msp --recursive
+                aws s3 cp /home/ec2-user/admin-msp s3://${CRYPTO_BUCKET}/${MEMBER_NAME}/admin-msp --recursive
                 
                 chown ec2-user:ec2-user -R admin-msp
                   
@@ -399,7 +402,7 @@ Resources:
               
             else
 
-                aws s3 cp s3://credentials-ledger-crypto/${MEMBER_NAME}/admin-msp ./admin-msp --recursive
+                aws s3 cp s3://${CRYPTO_BUCKET}/${MEMBER_NAME}/admin-msp ./admin-msp --recursive
                   
                 chown ec2-user:ec2-user -R admin-msp
                   
@@ -415,7 +418,7 @@ Resources:
             
                 mkdir /home/ec2-user/party-msp
 
-                aws s3 cp s3://credentials-ledger-crypto/${SECOND_MEMBER_NAME}/admin-msp /home/ec2-user/party-msp --recursive
+                aws s3 cp s3://${CRYPTO_BUCKET}/${SECOND_MEMBER_NAME}/admin-msp /home/ec2-user/party-msp --recursive
                 
                 chown ec2-user:ec2-user -R party-msp
                 
@@ -457,13 +460,13 @@ Resources:
                             - *Org1
                             - *Org2' > configtx.yaml
                                 
-                docker exec cli configtxgen -outputCreateChannelTx /opt/home/credentialschannel.pb -profile TwoOrgChannel -channelID credentialschannel --configPath /opt/home/
+                docker exec cli configtxgen -outputCreateChannelTx /opt/home/simplenetworkchannel.pb -profile TwoOrgChannel -channelID simplenetworkchannel --configPath /opt/home/
 
-                docker exec cli peer channel create -c credentialschannel -f /opt/home/credentialschannel.pb -o ${ORDERING_SERVICE_ENDPOINT} --cafile /opt/home/managedblockchain-tls-chain.pem --tls
+                docker exec cli peer channel create -c simplenetworkchannel -f /opt/home/simplenetworkchannel.pb -o ${ORDERING_SERVICE_ENDPOINT} --cafile /opt/home/managedblockchain-tls-chain.pem --tls
                 
-                docker exec cli peer channel fetch oldest /opt/home/credentialschannel.block -c credentialschannel -o ${ORDERING_SERVICE_ENDPOINT} --cafile /opt/home/managedblockchain-tls-chain.pem --tls
+                docker exec cli peer channel fetch oldest /opt/home/simplenetworkchannel.block -c simplenetworkchannel -o ${ORDERING_SERVICE_ENDPOINT} --cafile /opt/home/managedblockchain-tls-chain.pem --tls
                 
-                docker exec cli peer channel join -b /opt/home/credentialschannel.block -o $ORDERER --cafile /opt/home/managedblockchain-tls-chain.pem --tls
+                docker exec cli peer channel join -b /opt/home/simplenetworkchannel.block -o $ORDERER --cafile /opt/home/managedblockchain-tls-chain.pem --tls
                 
             fi
           - DOCKER_COMPOSE_VERSION: !FindInMap 
@@ -500,17 +503,18 @@ Resources:
             PEER_NODE_ENDPOINT: !Ref PeerNodeEndpoint
             ORDERING_SERVICE_ENDPOINT: !Ref OrderingServiceEndpoint
             FABRIC_CA_ENDPOINT: !Ref FabricCAEndpoint
+            CRYPTO_BUCKET: !Ref CryptoBucketName
     Metadata:
       'AWS::CloudFormation::Designer':
         id: aa5eff75-30be-46c5-8111-50149dca0c85
   InternetAccessSG:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
-      GroupDescription: credntials-ledger-internet-access-security-group
+      GroupDescription: internet-access-security-group
       GroupName: !Ref InternetAccessSGName
       Tags:
         - Key: Name
-          Value: credntials-ledger-internet-access-sg
+          Value: internet-access-sg
       VpcId: !Ref VPCID
       SecurityGroupEgress:
         - FromPort: '443'

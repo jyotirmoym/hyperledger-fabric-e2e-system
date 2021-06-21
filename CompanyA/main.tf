@@ -47,3 +47,32 @@ module "vpc2" {
   security_group_id   = module.vpc1.security_group_id
   subnets             = module.vpc1.subnets
 }
+
+module "dependencies" {
+  source = "../modules/fabric-client-deps"
+
+  crypto_bucket_name      = var.crypto_bucket_name
+  fabric_access_role_name = var.fabric_access_role_name
+  org_name                = var.org_name
+  key_pair_name           = var.key_pair_name
+}
+
+module "fabric-client" {
+  source = "../modules/fabric-client"
+
+  crypto_bucket     = module.dependencies.crypto_bucket
+  iam_role          = module.dependencies.iam_role
+  key_pair          = module.dependencies.key_pair
+  org1_name         = var.org_name
+  org2_name         = var.second_org_name
+  security_group_id = module.vpc1.security_group_id
+  peer_endpoint     = var.peer_endpoint
+  vpc_id            = module.vpc1.vpc_id
+  private_subnets   = module.vpc1.subnets
+  org2_id           = var.org2_id
+  org1_id           = var.org1_id
+  org1_admin_pw     = var.org1_admin_pw
+  ca_endpoint       = var.ca_endpoint
+  org1_admin_uname  = var.org1_admin_uname
+  ordering_endpoint = var.ordering_endpoint
+}
