@@ -20,13 +20,13 @@ resource "aws_cloudformation_stack" "fabric_stack" {
     "SecondMemberID"          = var.org2_id
     "CryptoBucketName"        = var.crypto_bucket
     "MemberID"                = var.org1_id
-    "MemberAdminPassword"     = var.org1_admin_pw
+    "MemberAdminPassword"     = var.org1_ca_pw
     "FabricCAEndpoint"        = var.ca_endpoint
     "EC2KeyPairName"          = var.key_pair
-    "MemberAdminUser"         = var.org1_admin_uname
+    "MemberAdminUser"         = var.org1_ca_uname
     "OrderingServiceEndpoint" = var.ordering_endpoint
     "MemberName"              = var.org1_name
-    "InstanceProfileName"     = var.iam_role
+    "InstanceProfileName"     = var.iam_instance_profile_name
   }
 
   template_body = file("${path.root}/../fabric-ledger-network/2. Fabric_Blockchain_Client_CF_Template.yaml")

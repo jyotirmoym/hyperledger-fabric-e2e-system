@@ -13,3 +13,7 @@ variable "fabric_access_role_name" {
 variable "key_pair_name" {
   type = string
 }
+
+variable "iam_instance_profile_name" {
+  type = string
+}

@@ -110,18 +110,14 @@ variable "org1_id" {
   type = string
 }
 
-variable "org1_admin_pw" {
-  type = string
-}
-
 variable "ca_endpoint" {
   type = string
 }
 
-variable "org1_admin_uname" {
+variable "ordering_endpoint" {
   type = string
 }
 
-variable "ordering_endpoint" {
+variable "iam_instance_profile_name" {
   type = string
 }

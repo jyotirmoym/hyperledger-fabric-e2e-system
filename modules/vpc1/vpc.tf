@@ -99,16 +99,18 @@ resource "aws_security_group" "security_group" {
   vpc_id      = tolist(data.aws_vpcs.default_vpc.ids)[0]
 
   ingress {
-    description      = "Allow self"
-    from_port        = 0
-    to_port          = -1
-    protocol         = "-1"
+    description = "Allow self"
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    self        = true
   }
 
   egress {
-    from_port        = 0
-    to_port          = -1
-    protocol         = "-1"
+    from_port = 0
+    to_port   = 0
+    protocol  = -1
+    self      = true
   }
 
   tags = {

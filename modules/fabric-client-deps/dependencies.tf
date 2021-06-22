@@ -31,21 +31,20 @@ resource "aws_s3_bucket_public_access_block" "crypto_bucket_acl" {
   restrict_public_buckets = true
 }
 
+data "aws_iam_policy_document" "instance-assume-role-policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
 resource "aws_iam_role" "fabric_access_role" {
-  name = var.fabric_access_role_name
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-      },
-    ]
-  })
+  name                = var.fabric_access_role_name
+  assume_role_policy  = data.aws_iam_policy_document.instance-assume-role-policy.json
   managed_policy_arns = [aws_iam_policy.fabric_access_policy.arn, aws_iam_policy.crypto_bucket_access_policy.arn]
 
   tags = {
@@ -109,13 +108,19 @@ resource "aws_iam_policy" "crypto_bucket_access_policy" {
   })
 }
 
+resource "aws_iam_instance_profile" "fabric-client-instance-profile" {
+  name  = var.iam_instance_profile_name
+  path  = "/"
+  role = aws_iam_role.fabric_access_role.name
+}
+
 resource "tls_private_key" "private_key" {
   algorithm = "RSA"
 }
 
-resource "local_file" "cloud_pem" { 
+resource "local_file" "cloud_pem" {
   filename = "${path.module}/${var.org_name}.pem"
-  content = tls_private_key.private_key.private_key_pem
+  content  = tls_private_key.private_key.private_key_pem
 }
 
 resource "aws_key_pair" "ec2_key" {
