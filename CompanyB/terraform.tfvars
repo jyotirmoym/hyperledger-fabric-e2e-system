@@ -1,6 +1,7 @@
 org_network_name = "SimpleNetwork"
 org_name = "CompanyB"
 admin_username = "admin"
+admin_passwd = "iW3oH4yE5iX6tG8h"
 availability_zone = "eu-west-2b"
 
 security_group_name = "fabric-security-group"
@@ -14,14 +15,12 @@ crypto_bucket_name = "simple-network-crypto-bucket-b"
 fabric_access_role_name = "FabricSimpleNetworkAccessRole"
 key_pair_name = "fabric-client-key"
 second_org_name = ""
-org1_admin_uname = "admin"
 iam_instance_profile_name = "FabricClientInstanceProfile"
 
 # Dynamic values
-admin_passwd = "iW3oH4yE5iX6tG8h"
-fabric_service_name = "com.amazonaws.eu-west-2.managedblockchain.n-qkqbt3g5cnfo5pwth5k6ecacoe"
-invitation_id = "in-T5DVYMSVEBBRFDNZW2PDE3JJ2U"
-nw_id = "n-QKQBT3G5CNFO5PWTH5K6ECACOE"
+fabric_service_name = "com.amazonaws.eu-west-2.managedblockchain.n-4glpwsm4zjcm5aem5ly5ok77tu"
+invitation_id = "in-ASHFKVMDUNCEDJAW4YZ6EE2QRQ"
+nw_id = "n-4GLPWSM4ZJCM5AEM5LY5OK77TU"
 peer_endpoint = "nd-72qrm5kky5bs7jhdtcbwcwwafy.m-4xrn4zvbt5cm5p63lfvzh4swia.n-qkqbt3g5cnfo5pwth5k6ecacoe.managedblockchain.eu-west-2.amazonaws.com:30006"
 org2_id = "" # m-4VDJYYKB75BQZEJVYJJKMSH7ZY
 org1_id = "m-4XRN4ZVBT5CM5P63LFVZH4SWIA"

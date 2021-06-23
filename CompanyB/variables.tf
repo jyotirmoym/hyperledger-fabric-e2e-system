@@ -113,10 +113,6 @@ variable "ca_endpoint" {
   type = string
 }
 
-variable "org1_admin_uname" {
-  type = string
-}
-
 variable "ordering_endpoint" {
   type = string
 }
