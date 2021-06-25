@@ -11,18 +11,19 @@ subnet_names = ["private-subnet-a", "private-subnet-b", "private-subnet-c"]
 route_table_name = ["private-route-a", "private-route-b", "private-route-c"]
 nat_names = ["nat-a", "nat-b", "nat-c"]
 eip_names = ["eip-nat-a", "eip-nat-b", "eip-nat-c"]
-crypto_bucket_name = "simple-network-crypto-bucket"
+crypto_bucket_name = "simple-network-crypto-bucket-a"
 fabric_access_role_name = "FabricSimpleNetworkAccessRole"
-key_pair_name = "fabri  c-client-key"
+key_pair_name = "fabric-client-key"
 second_org_name = "CompanyB"
 iam_instance_profile_name = "FabricClientInstanceProfile"
+user_pool_name = "FabricUserPool"
 
 # Dynamic values
-fabric_service_name = "com.amazonaws.eu-west-2.managedblockchain.n-4glpwsm4zjcm5aem5ly5ok77tu"
+fabric_service_name = "com.amazonaws.eu-west-2.managedblockchain.n-bz54v7iaivcmrcskbrz4tfuhjy"
 invitation_id = ""
 nw_id = ""
-peer_endpoint = "nd-wz4ksp6b7jahlnj26o3zwtu2vm.m-g3baisqmtfchbafjr3udpciti4.n-qkqbt3g5cnfo5pwth5k6ecacoe.managedblockchain.eu-west-2.amazonaws.com:30003"
-org2_id = "m-4XRN4ZVBT5CM5P63LFVZH4SWIA" # m-4VDJYYKB75BQZEJVYJJKMSH7ZY
-org1_id = "m-G3BAISQMTFCHBAFJR3UDPCITI4"
-ca_endpoint = "ca.m-g3baisqmtfchbafjr3udpciti4.n-qkqbt3g5cnfo5pwth5k6ecacoe.managedblockchain.eu-west-2.amazonaws.com:30002"
-ordering_endpoint = "orderer.n-qkqbt3g5cnfo5pwth5k6ecacoe.managedblockchain.eu-west-2.amazonaws.com:30001"
+peer_endpoint = "nd-y6zx2cxlbnfsxmldmx7s3fes5y.m-3kgtypmcu5f7zaksednsht7e6y.n-bz54v7iaivcmrcskbrz4tfuhjy.managedblockchain.eu-west-2.amazonaws.com:30003"
+org2_id = "m-BQIBLP5HAFE3PHTJ5IALYBDELU"
+org1_id = "m-3KGTYPMCU5F7ZAKSEDNSHT7E6Y"
+ca_endpoint = "ca.m-3kgtypmcu5f7zaksednsht7e6y.n-bz54v7iaivcmrcskbrz4tfuhjy.managedblockchain.eu-west-2.amazonaws.com:30002"
+ordering_endpoint = "orderer.n-bz54v7iaivcmrcskbrz4tfuhjy.managedblockchain.eu-west-2.amazonaws.com:30001"

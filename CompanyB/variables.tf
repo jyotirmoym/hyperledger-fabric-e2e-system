@@ -120,3 +120,9 @@ variable "ordering_endpoint" {
 variable "iam_instance_profile_name" {
   type = string
 }
+
+# Cognito user pool
+
+variable "user_pool_name" {
+  description = "The name of the member organisation"
+}

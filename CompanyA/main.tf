@@ -78,3 +78,9 @@ module "fabric-client" {
   ordering_endpoint         = var.ordering_endpoint
   iam_instance_profile_name = var.iam_instance_profile_name
 }
+
+module "fabric-user-pool" {
+  source = "../modules/user_pool"
+
+  user_pool_name = var.user_pool_name
+}
