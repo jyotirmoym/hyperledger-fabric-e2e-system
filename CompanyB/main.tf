@@ -82,5 +82,9 @@ module "fabric-client" {
 module "fabric-user-pool" {
   source = "../modules/user_pool"
 
-  user_pool_name = var.user_pool_name
+  user_pool_name     = var.user_pool_name
+  crypto_bucket_name = var.crypto_bucket_name
+  org_name           = var.org_name
+  fabric_user_group  = var.fabric_user_group
+
 }

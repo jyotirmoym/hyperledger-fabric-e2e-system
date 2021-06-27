@@ -217,3 +217,37 @@ resource "aws_cognito_identity_pool_roles_attachment" "fabric_user_identity_pool
     "authenticated"   = aws_iam_role.fabric_user_auth_role.arn
   }
 }
+
+resource "aws_iam_policy" "cognito_user_auth_role_policy" {
+  name = "cognito_user_auth_role_policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action   = ["s3:ListBucket"]
+        Effect   = "Allow"
+        Resource = join("",["arn:aws:s3:::", var.crypto_bucket_name])
+      },
+      {
+        Action   = ["s3:GetObject", "s3:PutObject", "s3:PutObjectTagging"]
+        Effect   = "Allow"
+        Resource = join("",["arn:aws:s3:::", var.crypto_bucket_name, "/*"])
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role" "fabric_cognito_user_auth_role" {
+  name                = "cognito_user_auth_role"
+  assume_role_policy  = data.aws_iam_policy_document.cognito_auth_assume_role_policy.json
+  managed_policy_arns = [aws_iam_policy.cognito_user_auth_role_policy.arn]
+}
+
+resource "aws_cognito_user_group" "fabric_user_group" {
+  name         = join("", [var.org_name, var.fabric_user_group])
+  user_pool_id = aws_cognito_user_pool.fabric_user_pool.id
+  description  = "The user group to add all Fabric users to"
+  precedence   = 1
+  role_arn     = aws_iam_role.fabric_cognito_user_auth_role.arn
+}
