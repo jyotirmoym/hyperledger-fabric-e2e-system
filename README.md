@@ -19,4 +19,4 @@ Following are the components used to support this end to end setup
 # Documentation
 Following article details out how to use this repository to setup the entire Hyperledger Fabric Blockchain system
 
-<a target="_blank" href="https://github-readme-medium-recent-article.vercel.app/medium/@neetjyo/0"><img src="https://github-readme-medium-recent-article.vercel.app/medium/@meetjyo/0" alt="Setup Hyperledger Fabric Blockchain Application in Amazon AWS"> 
+<a target="_blank" href="https://github-readme-medium-recent-article.vercel.app/medium/@meetjyo/0"><img src="https://github-readme-medium-recent-article.vercel.app/medium/@meetjyo/0" alt="Setup Hyperledger Fabric Blockchain Application in Amazon AWS"> 
