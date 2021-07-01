@@ -7,7 +7,7 @@ It involves the following AWS services and tools to bring up the entire applicat
 * Application Codebase - Java, Angular
 
 # Components
-Following are the components used support this end to end setup
+Following are the components used to support this end to end setup
 
 * [hyperledger-fabric-chaincode](https://github.com/jyotirmoym/hyperledger-fabric-chaincode) — The smart contract
 * [hyperledger-fabric-org1-api](https://github.com/jyotirmoym/hyperledger-fabric-org1-api) — The application API for first organisation
@@ -19,4 +19,4 @@ Following are the components used support this end to end setup
 # Documentation
 Following article details out how to use this repository to setup the entire Hyperledger Fabric Blockchain system
 
-<a target="_blank" href="https://github-readme-medium-recent-article.vercel.app/medium/@jyotirmoy-mukherjee/0"><img src="https://github-readme-medium-recent-article.vercel.app/medium/@jyotirmoy-mukherjee/0" alt="Setup Hyperledger Fabric Blockchain Application in Amazon AWS"> 
+<a target="_blank" href="https://github-readme-medium-recent-article.vercel.app/medium/@neetjyo/0"><img src="https://github-readme-medium-recent-article.vercel.app/medium/@meetjyo/0" alt="Setup Hyperledger Fabric Blockchain Application in Amazon AWS"> 
